@@ -10,7 +10,7 @@
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 
 ## Introduction
-This is a simple Django Job Board Application where users can view and apply for job listings.
+Welcome to the Django Job Board project! This project provides a job board application built with Django. This README will guide you through the steps required to set up and run the project locally.
 
 ## Installation
 1. **Clone the repository:**
