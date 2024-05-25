@@ -1,8 +1,8 @@
 from django.db import models
-from core import models as core
 from slugify import slugify
+from core.models import BaseModel
 
-class Job(core.BaseModel):
+class Job(BaseModel):
     title = models.CharField(max_length=100)
     company_name = models.CharField(max_length=100)
     description = models.TextField()
@@ -11,8 +11,8 @@ class Job(core.BaseModel):
     slug = models.SlugField(unique=True, blank=True, null=True)
     status = models.CharField(
         max_length=10, 
-        choices=core.BaseModel.STATUS_CHOICES, 
-        default=core.BaseModel.DEFAULT_STATUS
+        choices=BaseModel.STATUS_CHOICES, 
+        default=BaseModel.DEFAULT_STATUS
     )
     
     def save(self, *args, **kwargs):
@@ -21,4 +21,7 @@ class Job(core.BaseModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.title
+        return self.company_name + ' / ' + self.title
+    
+    class Meta:
+        ordering = ('created_on',)

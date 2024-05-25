@@ -76,3 +76,6 @@ dmypy.json
 
 # Pytest
 .cache/
+
+# Exclude anything uploaded to resumes
+resumes/

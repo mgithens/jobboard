@@ -1,27 +1,82 @@
 {% extends "core/base.html" %}
 {% block title %}Welcome to our Job Board Listings{% endblock %}
+{% block page_head_content %}<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>{% endblock %}
 {% block content %}
 <div class="relative container mx-auto pb-7 pt-14 lg:pt-22" id="post-content">
     <div class="w-full px-0">
         <div class=" bg-white rounded overflow-hidden shadow mx-1">
             <div class="p-3 sm:p-6 lg:p-8">
-                <div class="pb-3 text-gray-darker leading-normal text-base md:text-xl">
-                    <h1 class="text-xl font-bold">Job Board Listings</h1>
+                <div class="pb-3 text-gray-darker leading-normal text-base md:text-xl flex items-baseline justify-between w-full">
+                    <h1 class="text-xl sm:text-2xl md:text-4xl"><span class="mb-2 font-normal text-lg sm:text-2xl md:text-3xl">{{ job.company_name }} is hiring a</span><br/>{{ job.title }}</h1>
+                    <a href="../" class="bg-transparent hover:bg-gray-200 px-4 border border-gray-500 rounded">🔙 </a>
                 </div>
-                <div class="bg-green-100 rounded shadow">
-                    <a href="{% url 'job:detail' slug=job.slug %}">
-                        <h2 class="py-2 px-4 text-lg font-semibold block bg-green-200">{{ job.title }}</h2>
-                        <span class="p-4 mt-2 md:mt-1 sm:flex sm:justify-between flex-wrap items-center">
-                            <p class="text-gray-600 mt-2">👥 Company: {{ job.company_name }}</p>
-                            <p class="text-gray-600 mt-2">ℹ️ Description: {{ job.description }}</p>
-                            <p class="text-gray-700 mt-2" title="Job Location">📍 Location: {{ job.location }}</p>
-                            <p class="text-gray-700 mt-2" title="Application Deadline">⌛ Deadline: {{ job.deadline }}</p>
-                            <p class="text-gray-700 mt-2" title="Date Posted">🗓️ Posted {{ job.created_on|timesince }}</p>
-                        </span>
-                    </a>
+                <div class="bg-green-100 rounded shadow flex">
+                    <div class="p-4 mt-2 md:mt-1 sm:flex sm:justify-between flex-wrap items-center content-start">
+                        <p class="text-gray-700 mt-2" title="Job Location">📍 Location: {{ job.location }}</p>
+                        <p class="text-gray-700 mt-2" title="Date Posted">🗓️ Posted {{ job.created_on|timesince }} ago</p>
+                        <p class="text-gray-700 mt-2" title="Application Deadline">⌛ Deadline: {{ job.deadline }}</p>
+                        <div class="text-black mt-2">
+                            <div class="py-2">{{ job.description|linebreaks }}</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 px-4 pb-4">
+                        <div class="max-w-md mx-auto p-6 bg-white shadow-md rounded">
+                            {% if form %}
+                                <form id="applicationForm" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {% for field in form %}
+                                    <div class="mb-4">
+                                        {{ field.label_tag }}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                                    <button type="submit" class="w-full flex items-center justify-center px-10 py-2 border-transparent border-2 hover:border-blue-600 shadow text-base font-medium rounded-md text-white hover:text-blue-600 bg-blue-600 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-700 sm:mt-0 md:w-auto">Submit Application</button>
+                                </form>
+                                <div id="successMessage" class="hidden text-green-500 font-semibold mt-4">Your application has been submitted successfully.</div>
+                                <div id="errorMessage" class="hidden text-red-500 font-semibold mt-4">There was an error submitting your application. Please try again.</div>
+                            {% else %}
+                                <p class="text-red-500 font-semibold text-center">We are no longer accepting applications for this job. The deadline has passed.</p>
+                            {% endif %}
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block page_scripts %}
+<script>
+    $(document).ready(function() {
+        $('#applicationForm').on('submit', function(event) {
+            event.preventDefault();
+            
+            var formData = new FormData(this);
+            $.ajax({
+                url: "{% url 'job:detail' job.slug %}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        $('#successMessage').removeClass('hidden');
+                        $('#applicationForm').hide();
+                    } else {
+                        $('#errorMessage').text(response.error).removeClass('hidden');
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    $('#errorMessage').text('There was an error submitting your application. Please try again.').removeClass('hidden');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
