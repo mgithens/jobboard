@@ -28,11 +28,3 @@ EXPOSE 8000
 
 # Define the entrypoint script as the default command to run when the container starts
 ENTRYPOINT ["./docker-entrypoint.sh"]
-
-# Define environment variable
-ENV DJANGO_SUPERUSER_USERNAME=admin
-ENV DJANGO_SUPERUSER_PASSWORD=admin
-ENV DJANGO_SUPERUSER_EMAIL=admin@example.com
-
-# Run the application
-CMD ["sh", "-c", "python manage.py migrate && python manage.py createsuperuser --no-input && python manage.py runserver 0.0.0.0:8000"]
