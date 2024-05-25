@@ -16,7 +16,7 @@ Welcome to the Django Job Board project! This project provides a job board appli
 
 ### Prerequisites
 
-- Docker installed on your machine.
+- [Docker installed on your machine](https://docs.docker.com/engine/install/).
 - Docker Compose installed on your machine.
 
 ### Steps
