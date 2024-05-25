@@ -31,7 +31,7 @@ media/
 
 # Static files
 staticfiles/
-static/
+# static/
 
 # Jupyter Notebook
 .ipynb_checkpoints
