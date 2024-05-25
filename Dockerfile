@@ -4,6 +4,11 @@ FROM python:3.10-slim
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
 
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y \
+    nodejs \
+    npm
+
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
