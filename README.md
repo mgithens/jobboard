@@ -32,7 +32,7 @@ Welcome to the Django Job Board project! This project provides a job board appli
     docker-compose up --build
     ```
 
-3. Open your web browser and navigate to `http://localhost:8000`.
+3. Open your web browser and navigate to `http://0.0.0.0:8000`.
 
 ### Creating a Superuser
 
