@@ -1,13 +1,13 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-slim
+FROM python:3.11
 
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
 
 # Install Node.js and npm
-RUN apt-get update && apt-get install -y \
-    nodejs \
-    npm
+# RUN apt-get update && apt-get install -y \
+#     nodejs \
+#     npm
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
