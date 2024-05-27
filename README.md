@@ -44,5 +44,11 @@ The setup script will automatically create a superuser with the following creden
 ### Stopping the Container
 
 To stop the Docker container, press `Ctrl+C` in the terminal where Docker is running or run:
-```sh
-docker-compose down
+    ```sh
+    docker-compose down
+    ```
+
+## Admin Login for listing Jobs & Viewing Applications
+Browse to [http://0.0.0.0:8000/admin](http://0.0.0.0:8000/admin) and login with a Username of `admin` and Password of `admin`
+
+
